@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { Task } from './entity/Task';
 import * as dotenv from "dotenv";
-import { Task1725240204149 } from './migration/1725240204149-task';
+import { Task1725296923818 } from './migration/1725296923818-task';
 
 dotenv.config();
 
@@ -19,5 +19,5 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   logging: true,
   entities: [Task],
-  migrations: [Task1725240204149],
+  migrations: [Task1725296923818],
 });

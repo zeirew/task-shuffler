@@ -16,7 +16,7 @@ export class Task {
   @Column({ nullable: true })
   description?: string;
 
-  @Column({ default: false })
+  @Column('boolean', {default: false})
   completed: boolean;
 
   @Column({ nullable: true, type: 'timestamp' })
