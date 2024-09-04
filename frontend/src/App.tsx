@@ -1,6 +1,9 @@
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import Table from "./components/Table";
+
 const App = () => (
   <div>
-    <h1>Hello, World!</h1>
+    <Table/>
   </div>
 );
 

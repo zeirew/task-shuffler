@@ -2,8 +2,12 @@ import express from 'express';
 import { AppDataSource } from './data-source';
 import { taskRouter } from './routes/task.routes';
 
+const cors = require('cors');
 const app = express();
+
 app.use(express.json());
+app.use(cors());
+
 const { PORT = 3000 } = process.env;
 app.use('/api', taskRouter);
 
