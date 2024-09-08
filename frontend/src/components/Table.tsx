@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import CreationOverlay from './CreationOverlay';
+import CreateOverlay from './CreateOverlay';
+import TaskMenu from './TaskMenu';
+import './Table.css';
+import ViewOverlay from './ViewOverlay';
 
-type TableRow = {
+export type TableRow = {
+  id: number;
   title: string;
   description: string;
   completed: boolean;
@@ -20,7 +24,16 @@ const DateOptions: Intl.DateTimeFormatOptions = {
   timeZoneName: 'short'
 };
 
-const columns = [
+const columns = (handleView: (row: TableRow) => void, handleEdit: (row: TableRow) => void, handleDelete: (row: TableRow) => void) => [
+    {
+        name: 'ID',
+        selector: (row: TableRow) => row.id,
+        width: '0px',
+        style: {
+            display: 'none', 
+        },
+        omit: true, 
+    },
     {
         name: "Title",
         selector: (row: TableRow ) => row.title,
@@ -41,21 +54,46 @@ const columns = [
     },
     {
         name: "Created At",
-        selector: (row: TableRow ) => (row.createdAt ? new Intl.DateTimeFormat('en-US', DateOptions).format(new Date(row.createdAt)) : "-"),
+        selector: (row: TableRow ) => new Intl.DateTimeFormat('en-US', DateOptions).format(new Date(row.createdAt)),
         sortable: true,
+    },
+    {
+      name: 'Actions',
+      cell: (row: TableRow) => (
+        <TaskMenu
+          onView={() => handleView(row)}
+          onEdit={() => handleEdit(row)}
+          onDelete={() => handleDelete(row)}
+        />
+      )
     },
 ];
 
 function Table(){
     const [data, setData] = useState([]);
-    const [openOverlay, setOpenOverlay] = useState(false);
+    const [openCreateOverlay, setOpenCreateOverlay] = useState(false);
+    const [viewRow, setViewRow] = useState<TableRow | null>(null);
+    const [editRow, setEditRow] = useState<TableRow | null>(null);
+    const [deleteRow, setDeleteRow] = useState<TableRow | null>(null);
 
-    const handleOpenOverlay = () => {
-        setOpenOverlay(true);
+    const handleOpenCreateOverlay = () => {
+        setOpenCreateOverlay(true);
     };
 
-    const handleCloseOverlay = () => {
-        setOpenOverlay(false);
+    const handleCloseCreateOverlay = () => {
+        setOpenCreateOverlay(false);
+    };
+
+    const handleView = (task: TableRow) => {
+        setViewRow(task);
+    };
+
+    const handleEdit = (task: TableRow) => {
+        setEditRow(task);
+    };
+
+    const handleDelete = (task: TableRow) => {
+        setDeleteRow(task);
     };
 
     useEffect(() => {
@@ -67,12 +105,15 @@ function Table(){
 
     return (
         <div>
-            <button onClick={handleOpenOverlay}>+</button>
-            {openOverlay && (
-                <CreationOverlay onClose={handleCloseOverlay} />
+            <button onClick={handleOpenCreateOverlay}>+</button>
+            {openCreateOverlay && (
+                <CreateOverlay onClose={handleCloseCreateOverlay} />
+            )}
+            {viewRow != null && (
+                <ViewOverlay task={viewRow}/>
             )}
             <div className="container my-5">
-                <DataTable columns={columns} data={data} fixedHeader title="Task Dashboard" pagination selectableRows/>
+                <DataTable className="react-data-table" columns={columns(handleView, handleEdit, handleDelete)} data={data} fixedHeader title="Task Dashboard" pagination/>
             </div>
         </div>
     )

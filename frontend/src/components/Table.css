@@ -1,0 +1,26 @@
+.table-container {
+    margin: 0;
+    /* Remove margin around the table container */
+    padding: 0;
+    /* Remove padding inside the table container */
+    width: 100%;
+    /* Ensure the container takes the full width */
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width and height */
+}
+
+.react-data-table {
+    width: 100%;
+    /* Ensure the table uses the full width of its container */
+    margin: 0;
+    /* Remove margin around the table */
+    padding: 0;
+    /* Remove padding inside the table */
+    border-collapse: collapse;
+    /* Collapse table borders to remove extra spacing */
+}
+
+.react-data-table .rdt_TableCell {
+    padding: 0.5rem;
+    /* Adjust padding inside table cells as needed */
+}
